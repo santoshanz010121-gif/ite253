@@ -8,17 +8,30 @@
 
 <h2>Student CRUD System</h2>
 
-<!-- EXISTING FORM -->
-<input type="text" id="studentName" placeholder="Student Name">
-<input type="text" id="studentCourse" placeholder="Course">
-<input type="hidden" id="editIndex" value="-1">
-
-<button onclick="saveStudent()">Save Student</button>
+Student ID:
+<input type="text" id="studentId">
 
 <br><br>
 
-<!-- SEARCH -->
-<input type="text" id="searchStudent" placeholder="Search Student">
+Student Name:
+<input type="text" id="studentName">
+
+<br><br>
+
+Course:
+<input type="text" id="studentCourse">
+
+<input type="hidden" id="editIndex" value="-1">
+
+<br><br>
+
+<button onclick="saveStudent()">Save Student</button>
+<button onclick="clearForm()">Clear</button>
+
+<br><br>
+
+Search Student:
+<input type="text" id="searchStudent">
 <button onclick="searchStudent()">Search</button>
 <button onclick="displayStudents()">Show All</button>
 <button onclick="sortStudents()">Sort by Name</button>
@@ -30,7 +43,7 @@
         <tr>
             <th>No.</th>
             <th>Student ID</th>
-            <th>Name</th>
+            <th>Student Name</th>
             <th>Course</th>
             <th>Action</th>
         </tr>
@@ -51,21 +64,17 @@ let students = [];
 // CREATE and UPDATE
 function saveStudent() {
 
-    let id = prompt("Enter Student ID:");
+    let id = document.getElementById("studentId").value;
     let name = document.getElementById("studentName").value;
     let course = document.getElementById("studentCourse").value;
     let editIndex = parseInt(document.getElementById("editIndex").value);
-
-    if (id == null) {
-        return;
-    }
 
     if (id == "" || name == "" || course == "") {
         alert("Please complete all fields.");
         return;
     }
 
-    // CHECK DUPLICATE STUDENT ID
+    // Check duplicate Student ID
     for (let index = 0; index < students.length; index++) {
         if (students[index].id == id && index != editIndex) {
             alert("Student ID already exists.");
@@ -73,7 +82,7 @@ function saveStudent() {
         }
     }
 
-    // CHECK DUPLICATE STUDENT NAME
+    // Check duplicate Student Name
     for (let index = 0; index < students.length; index++) {
         if (students[index].name.toLowerCase() == name.toLowerCase()
             && index != editIndex) {
@@ -147,7 +156,6 @@ function displayStudents() {
         "</tr>";
     }
 
-    // TOTAL NUMBER OF STUDENTS
     document.getElementById("studentCount").innerHTML =
     "Total Students: " + students.length;
 }
@@ -155,6 +163,9 @@ function displayStudents() {
 
 // Select a student for editing
 function editStudent(index) {
+
+    document.getElementById("studentId").value =
+    students[index].id;
 
     document.getElementById("studentName").value =
     students[index].name;
@@ -203,6 +214,8 @@ function deleteStudent(index) {
 // Clear the input fields
 function clearForm() {
 
+    document.getElementById("studentId").value = "";
+
     document.getElementById("studentName").value = "";
 
     document.getElementById("studentCourse").value = "";
@@ -231,7 +244,7 @@ function searchStudent() {
 
         let match = false;
 
-        // Search manually without predefined array functions
+        // Search without predefined array functions
         for (
             let position = 0;
             position <= studentName.length - search.length;
